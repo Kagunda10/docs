@@ -1,32 +1,36 @@
 ---
-title: 'Payments'
+title: 'Create a Payment'
 description: 'How to process regular and split payments using the Deets API.'
 ---
 
-# Payments
+# Create a Payment
 
-This guide explains how to process payments using the Deets API, including both regular and split payments.
+This guide explains how to process payments using the Deets API. Payments can be of two types:
 
-> If you haven't set up your environment or integrated checkout, start with [Getting Started](/getting-started) and the [Integration Guide](/integration).
+1. **Regular Payment** – The full payment amount is sent to a single merchant.
+2. **Split Payment** – The payment amount is divided between the main merchant and a third party.
 
 ---
 
-## Payment Types
+## Prerequisites
 
-- **Regular Payment**: The full payment amount is sent to a single merchant.
-- **Split Payment**: The payment amount is divided between the main merchant and a third party.
+Before processing a payment, you must:
+
+1. **Generate an authentication token** – See [Generating a Token](./create-a-token).
+2. **Obtain your API key** – This will be provided during onboarding.
+3. **Ensure your MID is configured** – If using a different processor, contact your account manager.
 
 ---
 
 ## 1. Regular Payment
 
-A regular payment sends the entire transaction amount to the specified merchant.
+A regular payment means the entire transaction amount is sent to the specified merchant.
 
 ### Request Structure
 
-Send a `POST` request to the **Create Payments** endpoint with these headers:
+Send a `POST` request to the **Create Payments** endpoint, ensuring the following headers:
 
-- `Authorization: Bearer {token}` – Use the authentication token from the Integration Guide.
+- `Authorization: Bearer {token}` – Use the authentication token obtained earlier.
 - `x-api-key: {your-api-key}` – Your unique API key.
 
 #### Required Request Body Parameters
@@ -85,7 +89,7 @@ Body:
 
 ## 2. Split Payment
 
-A split payment distributes a portion of the total amount to a third party. Additional parameters are required:
+A split payment distributes a portion of the total amount to a third party. The additional parameters for split payments are:
 
 | Parameter    | Type   | Description                                                                 |
 |--------------|--------|-----------------------------------------------------------------------------|
@@ -179,31 +183,9 @@ Body:
 
 ---
 
-## Troubleshooting & FAQ
-
-<AccordionGroup>
-  <Accordion title="Why am I getting an authentication error?">
-    Double-check your API key, App key, and authentication token. Ensure you are using the correct environment (sandbox vs production).
-  </Accordion>
-  <Accordion title="How do I handle declined payments?">
-    Check the `code` and `message` fields in the response. Refer to the API Reference for error codes and recommended actions.
-  </Accordion>
-  <Accordion title="How do I test split payments?">
-    Use sandbox credentials and provide a valid `split` object in your request body. Review the example above.
-  </Accordion>
-</AccordionGroup>
-
----
-
 ## Conclusion
 
 - For regular payments, set `paymentType` to `"tokenv3"`
 - For split payments, set `paymentType` to `"tokenv3Split"` and specify the `split` object.
 - Always include authentication headers (`Bearer token` and `x-api-key`)
-- Use the response codes to handle success and failure scenarios efficiently.
-
----
-
-**Next:**
-- [Integration Guide](/integration): Learn how to authenticate and create checkout pages.
-- [API Reference](/api-reference/introduction): Explore all endpoints and webhooks.
+- Use the response codes to handle success and failure scenarios efficiently. 

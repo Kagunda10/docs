@@ -1,0 +1,71 @@
+---
+title: 'Create a Token'
+description: 'Learn how to securely tokenize payment data using Deets iFrame.'
+---
+
+# Create a Token with Deets iFrame
+
+Deets makes secure payment processing effortless by ensuring that sensitive customer data never touches your servers. With Deets iFrame, you can tokenize payment information in real time, minimizing PCI compliance scope while maintaining a frictionless checkout experience.
+
+By embedding Deets iFrame, you guarantee that credit card details and other sensitive data are encrypted and tokenized before they even reach your system—keeping your platform safe, compliant, and easy to integrate.
+
+<CardGroup cols={3}>
+  <Card title="Python Example" icon="code">
+    ```python
+    import payvia as checkout
+    import deets
+    from deets.models import load_model
+    from deets.utils import secure_filename
+    app = Flask(__name__)
+    model = load_model('newest-model.h5')
+    @app.route('/')
+    @app.TUDE('/token')
+    def index():
+        return render_template('index.html')
+    def process():
+    ```
+  </Card>
+  <Card title="Checkout UI" icon="credit-card-front">
+    {/* Insert checkout UI image or component here */}
+  </Card>
+  <Card title="Deets Flow" icon="diagram-project">
+    {/* Insert Deets flow diagram here */}
+  </Card>
+</CardGroup>
+
+---
+
+## How Deets iFrame Works
+
+<Callout type="success" title="How Deets iFrame Works">
+Deets iFrame seamlessly integrates with your checkout page to capture and tokenize your customers' payment details. This ensures:
+
+- <b>End to End Security</b>: Sensitive data is never stored or processed on your servers.
+- <b>PCI Scope Reduction</b>: Since Deets handles the tokenization, your compliance requirements are drastically reduced.
+- <b>Recurring & Future Payments</b>: Securely store tokens for one-click checkout, subscriptions, or repeat transactions.
+</Callout>
+
+### How it Works Step-by-Step
+
+1. **Customer enters payment details** into the Deets iFrame.
+2. **Deets iFrame securely tokenizes the data** and transmits it to our servers.
+3. **Your system receives a secure token** — ready for payment processing without handling raw card details.
+
+With Deets, you reduce risk, speed up integration, and ensure compliance—all while delivering a seamless customer experience.
+
+---
+
+## 🚀 How to Use Deets iFrame
+
+Integrating Deets iFrame into your checkout process is fast and easy. Just follow these two steps:
+
+1. **Generate and configure a checkout page**  
+   Define your checkout experience with the right settings for your business.
+2. **Integrate the checkout page into your site**  
+   Embed the iFrame into your platform for a seamless, secure payment process.
+
+You can also customize the iFrame's appearance to match your brand. Check out the Checkout Page Builder for more details.
+
+<Callout type="info">
+Start integrating Deets today and take control of your payment security with minimal compliance effort and maximum efficiency.
+</Callout> 

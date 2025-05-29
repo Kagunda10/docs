@@ -1,0 +1,80 @@
+---
+title: 'Getting Started'
+description: 'Set up your environment and make your first API call with Payvia/Deets.'
+---
+
+# Getting Started
+
+Welcome to Payvia! Follow these steps to get up and running quickly.
+
+## Prerequisites
+
+- A Payvia/Deets account (sign up via your platform or contact support)
+- API key and App key (provided during onboarding)
+- Node.js, Python, or your preferred language installed
+
+---
+
+## 1. Environment Setup
+
+- Clone your docs or integration repo (see [Quickstart](/quickstart))
+- Install required dependencies for your language (e.g., `axios` for Node.js, `requests` for Python)
+
+---
+
+## 2. Obtain API Credentials
+
+- **API Key**: Provided by your account manager or in your dashboard
+- **App Key**: Used for authentication
+- **Merchant ID (MID)**: Where funds will be credited
+
+> For sandbox testing, use the credentials provided in your dashboard or by your account manager.
+
+---
+
+## 3. Sandbox vs. Production
+
+- **Sandbox**: Test your integration safely using sandbox endpoints and credentials
+- **Production**: Go live with real transactions using production endpoints and credentials
+
+> Always test thoroughly in sandbox before switching to production.
+
+---
+
+## 4. Make Your First API Call
+
+Here's how to authenticate and get started (Node.js example):
+
+```js
+const axios = require('axios');
+
+const response = await axios.post(
+  'https://test.digitszapi.com/test/auth/token',
+  {
+    data: {
+      type: 'auth',
+      attributes: {
+        appKey: 'YOUR_APP_KEY'
+      }
+    }
+  },
+  {
+    headers: {
+      'x-api-key': 'YOUR_API_KEY',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+console.log('Token:', response.data.data.attributes.appToken);
+```
+
+> Replace `YOUR_APP_KEY` and `YOUR_API_KEY` with your sandbox credentials.
+
+---
+
+## Next Steps
+
+- [Integration Guide](/integration): Learn how to create checkout pages and customize your payment flow.
+- [Payments](/checkout): See how to process regular and split payments.
+- [API Reference](/api-reference/introduction): Explore all endpoints and webhooks. 

@@ -1,0 +1,59 @@
+---
+title: 'Checkout Page Emulator'
+description: 'Test and refine your checkout experience in real time with the Deets emulator.'
+---
+
+# Checkout Page Emulator
+
+Checkout Form Emulator – Test and refine your checkout experience in real time. Use the Sandbox for risk-free testing or the Production mode for live transactions. Instantly preview styles, debug issues, and simulate different payment scenarios.
+
+---
+
+## 🧪 Checkout Form Emulator
+
+To experiment with your checkout styles or transactions in real time, go to the Deets Sandbox Checkout Emulator:
+
+### Sandbox Checkout Emulator:
+This checkout form connects to our sandbox environment. You can test transactions without payments being processed. For cards that can be used, refer to the list below.
+
+<Button href="#" type="primary">Sandbox Pay via Checkout Form</Button>
+
+### Production Checkout Emulator
+This checkout form connects to our production environment. Transactions will be processed and cards will be charged if you use this form.
+
+<Button href="#" type="secondary">Production Pay via Checkout Form</Button>
+
+---
+
+## How the Emulator Works
+
+- **Live Updates:** Any styles or parameters you pass will be reflected in the emulator's checkout page right away.
+- **Debug & Iterate:** Easily spot layout or styling issues and fix them before going live.
+
+---
+
+## 🧪 Simulated Card Responses
+
+Use the following test card numbers to simulate different transaction scenarios.
+
+| Parameter           | Type            | Description                  |
+|---------------------|-----------------|------------------------------|
+| 4747474747474747    | Visa            | Success                      |
+| 4111111111111111    | Visa            | Success                      |
+| 5454545454545454    | MasterCard      | Success                      |
+| 2221000000000009    | MasterCard      | Success                      |
+| 2223000048400011    | MasterCard      | Success                      |
+| 371449635398431     | American Express| Success                      |
+| 6011000000000012    | Discover        | Success                      |
+| 3535353535353535    | JCB             | Success                      |
+| 4404040404040404    | Visa            | Invalid credit card number    |
+| 4909009009009090    | Visa            | Issuer bank timed out         |
+| 4828282828282828    | Visa            | Card limit exceeded           |
+| 4616161616161616    | Visa            | Insufficient funds            |
+| 4535353535353535    | Visa            | Issuer cannot locate bank     |
+
+---
+
+**Next:**
+- [Create a Payment](./create-a-payment)
+- [PCI Compliance](./pci-compliance) 

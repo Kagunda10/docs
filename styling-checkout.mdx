@@ -1,0 +1,52 @@
+---
+title: 'Styling the Checkout Page'
+description: 'Customize your Deets checkout page to match your brand.'
+---
+
+# Styling the Checkout Page
+
+Deets allows you to fully customize your checkout experience to align with your brand. You can modify colors, fonts, borders, and placeholders to create a seamless and visually appealing payment flow.
+
+The `style` object allows you to define the visual aspects of the checkout form. Below is an example configuration:
+
+```js
+const styles = {
+  backgroundColor: '#ffffff', // Background color of the form
+  inputColor: '#000000',      // Text color inside input fields
+  inputBorderColor: '#cccccc',// Border color of input fields
+  inputBorderWidth: '1px',    // Border width of input fields
+  buttonColor: '#007bff',     // Primary button background color
+  buttonText: '#fff',         // Button text color
+  buttonBorderColor: '#0056b3', // Button border color
+  buttonBorderWidth: '1px',   // Button border width
+  fontSize: '16px',           // Default font size
+  fontStyle: 'normal',        // Default font style
+  labelFontSize: '14px',      // Label font size
+  labelFontStyle: 'normal',   // Label font style
+  buttonFontSize: '16px',     // Button font size
+  buttonFontStyle: 'normal',  // Button font style
+  borderRadius: '4px',        // Rounded corners for form elements
+  buttonBorderRadius: '4px'   // Rounded corners for buttons
+};
+```
+
+---
+
+## Passing Style Parameters to the Checkout URL
+
+You can pass style configurations directly into the checkout page URL:
+
+```text
+https://payvia.ondets.ai/content-delivery/hppg4digitsz-deotest4c-33581424-4333173-17950414.html?amount=1000&style=x78x2or&...etc
+```
+
+---
+
+## Final Thoughts
+
+By customizing your checkout page styles, you can:
+- ✅ Ensure brand consistency with custom fonts, colors, and borders.
+- ✅ Improve customer experience with a clean and user-friendly interface.
+- ✅ Easily test configurations using the Deets Sandbox.
+
+Ready to go live? Start integrating Deets today and create a visually appealing, secure, and seamless checkout experience! 🚀 

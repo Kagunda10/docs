@@ -1,0 +1,37 @@
+---
+title: 'Tokenization'
+description: 'How Deets uses tokenization to secure payment data.'
+---
+
+# Tokenization
+
+Tokenization is a security process that replaces sensitive payment data (like credit card numbers) with unique, non-sensitive tokens. These tokens can be safely stored, transmitted, and used for payment processing—without exposing the original card data.
+
+---
+
+## How Deets Uses Tokenization
+
+- When a customer enters payment details, Deets iFrame captures and tokenizes the data instantly.
+- The original card data is never stored or transmitted to your servers.
+- A secure token is returned to your backend, which you use for payment processing, refunds, and recurring charges.
+
+---
+
+## Benefits of Tokenization
+
+- **Reduces PCI scope:** No sensitive card data touches your infrastructure.
+- **Prevents data breaches:** Stolen tokens are useless without Deets' systems.
+- **Enables recurring payments:** Securely store and reuse tokens for subscriptions or one-click checkout.
+- **Simplifies compliance:** Focus on your business, not on complex security requirements.
+
+---
+
+## Best Practices
+
+- Always use the Deets iFrame to tokenize payment data.
+- Never attempt to store or process raw card data yourself.
+- Use tokens for all payment, refund, and recurring billing operations.
+
+---
+
+For more on how tokenization works with Deets, see the [Integration Guide](/integration) or contact support for technical details. 

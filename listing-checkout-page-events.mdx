@@ -1,0 +1,118 @@
+---
+title: 'Listening to Checkout Page Events'
+description: 'How to capture and handle tokenization events from the Deets checkout page.'
+---
+
+# Listening to Checkout Page Events
+
+After the checkout page is generated and initialized, Deets will return tokenization events. These events contain a securely generated payment token, which is required to process a payment.
+
+By listening to these checkout events, you can:
+- Capture the payment token in real-time for seamless processing
+- Enhance security by validating transaction responses before processing
+- Improve customer experience by handling checkout success or failure efficiently
+
+---
+
+## Why Listen to Checkout Page Events?
+
+When a customer submits their payment details via Deets iFrame, sensitive card data is never exposed to your system. Instead, Deets tokenizes the payment information and returns a secure token, which your backend uses to process the transaction.
+
+By integrating the event listener correctly, your platform remains secure, PCI-compliant, and capable of handling real-time transactions smoothly.
+
+---
+
+## Step 1: Set Up the Event Listener
+
+To capture the tokenization event, add this line of code where the checkout form is embedded inside an iFrame:
+
+```js
+window.addEventListener('message', handleTokenizationEvent);
+```
+
+This event listener will detect messages from Deets iFrame, allowing your system to extract the secure payment token.
+
+---
+
+## Step 2: Extract the Token from the Event Data
+
+When a transaction is completed, the event contains the tokenized payment details. The event data follows this structure:
+
+```js
+interface TokenizationResponse {
+  type: 'paymentCompleted',
+  data: {
+    message: 'OK',
+    token: string, // Example: '474747c0p0ip4747-3794690770'
+    attributes: {},
+    tokenId: string, // Same as attributes.customerId
+    customerId: string, // If same as attributes.customerId
+  }
+}
+```
+
+---
+
+## Example Implementation
+
+Here's how to listen for the event, extract the token, and process it:
+
+```js
+const handleTokenizationEvent = (event) => {
+  // Validate the event origin to ensure it is from Deets
+  if (!event.origin.includes('checkout.deets.com')) return;
+  const response = event.data as TokenizationResponse;
+  if (response.type === 'paymentCompleted') {
+    const tokenId = response.data.tokenId; // Extract the token ID
+    const customerId = response.data.customerId; // Extract customer ID
+    console.log('Received token:', tokenId);
+    console.log('Customer ID:', customerId);
+    // Now send this token to your backend for payment processing
+  }
+};
+window.addEventListener('message', handleTokenizationEvent);
+```
+
+---
+
+## Unmounting the Listener (Best Practice)
+
+Since the checkout form may be reloaded multiple times, ensure the event listener is removed before adding a new one:
+
+```js
+window.removeEventListener('message', handleTokenizationEvent);
+```
+
+---
+
+## Important Security Considerations
+
+<Callout type="warning" title="Validate the Event Origin">
+Ensure the message originates from Deets' secure checkout domain:
+
+```js
+if (!event.origin.includes('checkout.deets.com')) return;
+```
+</Callout>
+
+<Callout type="success" title="Validate the Event Data">
+- Ensure the response matches the expected schema
+- Use schema validation libraries like zod or joi to validate response integrity
+</Callout>
+
+<Callout type="info" title="Handle Tokens Securely">
+- Never expose the payment token on the frontend. Always send it securely to your backend for further processing.
+- Use HTTPS connections when sending the token to your server.
+</Callout>
+
+---
+
+## Final Thoughts
+
+By integrating Deets' event listener, you ensure a secure, fast, and seamless payment experience while maintaining full PCI compliance.
+
+- Without this event listener, you won't receive the payment token. This token is essential to process transactions securely.
+- Ensure proper validation and security checks before processing any payments.
+- Keep your checkout experience smooth by handling payment success or failure events efficiently.
+
+Ready to go live? Start integrating Deets today and enable real-time, secure, and PCI-compliant payments for your business! 🚀 

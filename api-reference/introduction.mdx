@@ -1,33 +1,48 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Reference'
+description: 'Explore all available endpoints, authentication, and webhooks for Payvia/Deets.'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+# API Reference
 
-## Welcome
+Welcome to the Payvia/Deets API Reference. Here you'll find detailed documentation for all available endpoints, authentication, and webhooks.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+---
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+## How to Use This Reference
+
+- Browse the available endpoints below for request/response details and usage examples.
+- See the [Integration Guide](/integration) for authentication and setup instructions.
+- Use the [Payments](/checkout) guide for end-to-end payment flows.
+
+---
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints require authentication using a Bearer token and your API key.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+- `Authorization: Bearer {token}`
+- `x-api-key: {your-api-key}`
+
+Obtain your token by following the [Integration Guide](/integration).
+
+---
+
+## Endpoints
+
+- [Create Payment](/api-reference/endpoint/create)
+- [Get Payment](/api-reference/endpoint/get)
+- [Delete Payment](/api-reference/endpoint/delete)
+- [Webhooks](/api-reference/endpoint/webhook)
+
+---
+
+## Best Practices
+
+- Always use HTTPS for all API requests.
+- Store your API credentials securely and never expose them in client-side code.
+- Handle errors gracefully and refer to the response codes for troubleshooting.
+
+---
+
+For more advanced usage, see the [Essentials](/essentials/markdown) section for working with Markdown, code, and custom components in your docs.

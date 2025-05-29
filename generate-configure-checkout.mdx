@@ -1,0 +1,252 @@
+---
+title: 'Generate & Configure Your Checkout Page'
+description: 'Step-by-step guide to generating and customizing your Deets iFrame checkout page.'
+---
+
+# 🌟 Generate & Configure Your Checkout Page with Deets iFrame
+
+Deets provides a secure, flexible, and fully customizable checkout solution that keeps sensitive payment data out of your infrastructure—eliminating PCI compliance headaches while giving you full control over the payment experience.
+
+## 🛠️ Getting Started
+
+To integrate Deets iFrame into your checkout, follow these three key steps:
+
+1. **Authenticate with Deets API** – Securely obtain an authentication token.
+2. **Generate Your Checkout Page** – Use Deets API to dynamically create a payment page.
+3. **Customize & Configure the Checkout Page** – Use query parameters to tailor the checkout experience.
+
+---
+
+> **Base URLs:**
+> - Sandbox API: https://test.digitszapi.com/test
+> - Sandbox Payment API: https://utilities.staging.digitsz.com
+> - Production API: https://beta.digitszapi.com/v3
+> - Production Payment API: https://utilities.digitsz.com
+
+> **Sandbox Credentials:**
+> - Merchant ID: `csourc--goodminicpg-7f8651f3-324605-1793619739`
+> - API Key: `EmBfw7bE2vMCElw6Knx6mretnicxy3gVGvNmk`
+> - App Key: `7U3JcyL1oTSCHXycymPf0eEXGythyz2uzZ3kdnX75USkHqLZMGKY0O0anJtI`
+
+Your account manager will provide you production credentials after sandbox integration.
+
+---
+
+## 🗝️ Step 1: Authenticate with Deets API
+
+Use the following request to authenticate and retrieve a temporary authentication token.
+
+<Tabs>
+  <Tab title="cURL">
+
+```bash
+curl --location "{base_url}/auth/token" \
+  --header "x-api-key: {your-app-key}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "data": {
+      "type": "auth",
+      "attributes": {
+        "appKey": "{your-app-key}"
+      }
+    }
+  }'
+```
+  </Tab>
+  <Tab title="Node.js">
+
+```js
+const axios = require('axios');
+const response = await axios.post(
+  '{base_url}/auth/token',
+  {
+    data: {
+      type: 'auth',
+      attributes: {
+        appKey: '{your-app-key}'
+      }
+    }
+  },
+  {
+    headers: {
+      'x-api-key': '{your-app-key}',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+const token = response.data.data.attributes.appToken;
+```
+  </Tab>
+  <Tab title="Python">
+
+```python
+import requests
+url = "{base_url}/auth/token"
+headers = {
+    "x-api-key": "{your-app-key}",
+    "Content-Type": "application/json"
+}
+data = {
+    "data": {
+        "type": "auth",
+        "attributes": {
+            "appKey": "{your-app-key}"
+        }
+    }
+}
+response = requests.post(url, json=data, headers=headers)
+token = response.json()["data"]["attributes"]["appToken"]
+```
+  </Tab>
+</Tabs>
+
+**Response:**
+```json
+{
+  "links": {
+    "self": "{base_url}/auth/token"
+  },
+  "data": {
+    "type": "auth",
+    "id": "{API KEY USED}",
+    "attributes": {
+      "appToken": "{JWT TOKEN}"
+    }
+  }
+}
+```
+
+> ✅ Store this token securely—it will be used for subsequent API requests.
+
+---
+
+## 📝 Step 2: Generate Your Checkout Page
+
+Once authenticated, you can generate a checkout page dynamically.
+
+<Tabs>
+  <Tab title="cURL">
+
+```bash
+curl --location "{base_url}/generator/genPayment" \
+  --header "x-api-key: {your-app-key}" \
+  --header "Authorization: Bearer {authentication-token}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "merchant_id": "{your-merchant-id}",
+    "is_capture_email": true,
+    "is_capture_zip": true,
+    "enable_token": true,
+    "payment_version": "v4",
+    "style": {}
+  }'
+```
+  </Tab>
+  <Tab title="Node.js">
+
+```js
+const response = await axios.post(
+  '{base_url}/generator/genPayment',
+  {
+    merchant_id: '{your-merchant-id}',
+    is_capture_email: true,
+    is_capture_zip: true,
+    enable_token: true,
+    payment_version: 'v4',
+    style: {}
+  },
+  {
+    headers: {
+      'x-api-key': '{your-app-key}',
+      'Authorization': 'Bearer {authentication-token}',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+const checkoutUrl = response.data.object.url;
+```
+  </Tab>
+  <Tab title="Python">
+
+```python
+import requests
+url = "{base_url}/generator/genPayment"
+headers = {
+    "x-api-key": "{your-app-key}",
+    "Authorization": "Bearer {authentication-token}",
+    "Content-Type": "application/json"
+}
+data = {
+    "merchant_id": "{your-merchant-id}",
+    "is_capture_email": True,
+    "is_capture_zip": True,
+    "enable_token": True,
+    "payment_version": "v4",
+    "style": {}
+}
+response = requests.post(url, json=data, headers=headers)
+checkout_url = response.json()["object"]["url"]
+```
+  </Tab>
+</Tabs>
+
+**Response:**
+```json
+{
+  "message": "OK",
+  "object": {
+    "url": "{YOUR IFRAME URL}"
+  },
+  "shared_key": "{SHARED KEY}"
+}
+```
+
+---
+
+## 🎨 Step 3: Customize & Configure Your Checkout Page
+
+Deets iFrame allows you to personalize the checkout experience by adding URL query parameters. These parameters can pre-fill customer details, adjust styling, and enable additional security features.
+
+### Query Parameters for Customization
+
+| Parameter     | Type    | Required | Description                                      |
+|--------------|---------|----------|--------------------------------------------------|
+| amount       | Integer | Yes      | Amount in cents (e.g., 1000 for $10.00)          |
+| email        | String  | No       | Customer's email address                         |
+| zip          | String  | No       | Customer's ZIP code                              |
+| invoice      | String  | No       | Unique invoice number for the transaction        |
+| splitConfig  | JSON    | No       | Split payment configuration for multi-recipient transactions |
+
+**Example Checkout Page URL with Parameters:**
+```
+https://checkout.example.com?amount=1000&email=customer@example.com&zip=12345
+```
+
+#### Advanced Customization (Embedded Checkout Form Configuration)
+
+| Parameter         | Type    | Required | Description                        |
+|-------------------|---------|----------|------------------------------------|
+| cardHolderName    | String  | No       | Cardholder's name                  |
+| email             | String  | No       | Customer's email address           |
+| isEmailEnabled    | Boolean | No       | Show or hide email field           |
+| mobileNumber      | String  | No       | Customer's phone number            |
+| zipCode           | String  | No       | Customer's ZIP code                |
+| isZipCodeEnabled  | Boolean | No       | Show or hide ZIP code field        |
+
+**Example Embedded Checkout Form URL Parameters:**
+```
+?cardHolderName=John%20Doe&email=customer%40example.com&isEmailEnabled=true&zipCode=12345&isZipCodeEnabled=true
+```
+
+---
+
+<Callout type="success" title="Final Summary">
+By following these steps, you can successfully authenticate, generate, and configure your Deets Frame checkout:
+
+1. **Obtain an Authentication Token** – Secure API access with your credentials.
+2. **Generate a Checkout Page** – Create a secure and dynamic payment session.
+3. **Customize the Checkout Experience** – Use parameters to tailor the UI and functionality.
+4. **Embed Securely & Process Transactions** – Ensure full compliance while keeping payments seamless.
+
+Ready to go live? Start integrating Deets today and unlock fast, secure, and PCI-compliant payments for your business! 🚀
+</Callout> 
