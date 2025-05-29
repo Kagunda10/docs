@@ -1,0 +1,195 @@
+---
+title: 'Create a Payment'
+description: 'How to process payments using the Deets API (regular and split payments)'
+---
+
+# Create a Payment
+
+## Overview
+
+This guide explains how to process payments using the Deets API. Payments can be of two types:
+
+1. **Regular Payment** – The full payment amount is sent to a single merchant.
+2. **Split Payment** – The payment amount is divided between the main merchant and a third party.
+
+## Prerequisites
+
+Before processing a payment, you must:
+
+1. **Generate an authentication token** – See [Generating a Token](#).
+2. **Obtain your API key** – This will be provided during onboarding.
+3. **Ensure your MID is configured** – If using a different processor, contact your account manager.
+
+---
+
+## 1. Regular Payment
+
+A regular payment means the entire transaction amount is sent to the specified merchant.
+
+### Request Structure
+
+Send a `POST` request to the **Create Payments** endpoint, ensuring the following headers:
+
+- `Authorization: Bearer {token}` – Use the authentication token obtained earlier.
+- `x-api-key: {your-api-key}` – Your unique API key.
+
+> Please refer to the API specs for sandbox credentials.
+
+#### Required Request Body Parameters
+
+| Parameter    | Type   | Description                                                      |
+|--------------|--------|------------------------------------------------------------------|
+| paymentType  | string | Must be set to `"tokenv3"` to indicate a regular payment.         |
+| merchantId   | string | Your MID (Merchant ID) where the funds will be credited.          |
+| tokenId      | string | The credit card token captured via our Frame.                    |
+
+### Example Request
+
+```json
+POST {{base_url}}/payments
+Headers:
+  Authorization: Bearer {token}
+  x-api-key: {your-api-key}
+Body:
+{
+  "data": {
+    "type": "payments",
+    "attributes": {
+      "paymentType": "tokenv3",
+      "merchantId": "{merchantId}",
+      "miscData": "{"tmplnvip":"127.0.0.1","customerIp":"127.0.0.1","rawData":"Lorem Ipsum"}",
+      "customer": {
+        "firstname": "Dominic",
+        "lastname": "Go",
+        "email": "dom@digitsz.com"
+      },
+      "token": {
+        "tokenId": "{tokenExToken}",
+        "holder": "Tommy",
+        "expiry": "02/29",
+        "usaVs": true
+      },
+      "transaction": {
+        "amount": 1000,
+        "currency": "USD",
+        "invoice": "PAYMENT-TOKEN-7"
+      },
+      "billingAddress": {
+        "line1": "21 Jump Street",
+        "line2": "Suite 007",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "820344716",
+        "country": "USA"
+      }
+    }
+  }
+}
+```
+
+---
+
+## 2. Split Payment
+
+A split payment distributes a portion of the total amount to a third party. The additional parameters for split payments are:
+
+#### Required Parameters
+
+| Parameter    | Type   | Description                                                                 |
+|--------------|--------|-----------------------------------------------------------------------------|
+| paymentType  | string | Must be set to `"tokenv3Split"` for split payments.                         |
+| merchantId   | string | The main merchant's MID (Merchant ID).                                      |
+| tokenId      | string | The credit card token captured via our Frame.                               |
+| tokenId      | object | Contains the third party's MID (`merchantId`) and the amount they should receive (`amount`). |
+
+### Example Request
+
+```json
+POST {{base_url}}/payments
+Headers:
+  Authorization: Bearer {token}
+  x-api-key: {your-api-key}
+Body:
+{
+  "data": {
+    "type": "payments",
+    "attributes": {
+      "paymentType": "tokenv3Split",
+      "merchantId": "{merchantId}",
+      "miscData": "{"tmplnvip":"127.0.0.1","customerIp":"127.0.0.1","rawData":"Lorem Ipsum"}",
+      "customer": {
+        "firstname": "Dominic",
+        "lastname": "Go",
+        "email": "dom@digitsz.com"
+      },
+      "token": {
+        "tokenId": "{tokenExToken}",
+        "holder": "Tommy",
+        "expiry": "02/29",
+        "usaVs": true
+      },
+      "transaction": {
+        "amount": 1000,
+        "currency": "USD",
+        "invoice": "PAYMENT-TOKEN-7"
+      },
+      "billingAddress": {
+        "line1": "21 Jump Street",
+        "line2": "Suite 007",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "820344716",
+        "country": "USA"
+      },
+      "split": {
+        "merchantId": "{thirdPartyMerchantId}",
+        "amount": 50
+      }
+    }
+  }
+}
+```
+
+---
+
+## 3. Response Format
+
+### Success Response
+
+```json
+{
+  "links": {
+    "self": "{{base_url}}/payments/{{merchant_id}}"
+  },
+  "data": {
+    "type": "payments",
+    "id": "{{merchant_id}}",
+    "attributes": {
+      "paymentType": "tokenv3",
+      "transaction": {
+        "code": "0",
+        "message": "Success",
+        "amount": 1000,
+        "invoice": "byzd41d5ms",
+        "currency": "USD",
+        "authCode": "A1111",
+        "usaVsResult": "Y",
+        "codeResultM": "M",
+        "gross": 1000,
+        "grossMinusNut": 965,
+        "fees": 35,
+        "rate": 2.95
+      }
+    }
+  }
+}
+```
+
+---
+
+## Conclusion
+
+- For regular payments, set `paymentType` to `"tokenv3"`
+- For split payments, set `paymentType` to `"tokenv3Split"` and specify the `split` object.
+- Always include authentication headers (`Bearer token` and `x-api-key`)
+- Use the response codes to handle success and failure scenarios efficiently.

@@ -1,0 +1,482 @@
+---
+title: 'Deets iFrame Integration'
+description: 'Integrate Deets iFrame for secure, tokenized payment processing.'
+---
+
+# Create a Token with Deets iFrame
+
+Deets makes secure payment processing effortless by ensuring that sensitive customer data never touches your servers. With Deets iFrame, you can tokenize payment information in real time, minimizing PCI compliance scope while maintaining a frictionless checkout experience.
+
+By embedding Deets iFrame, you guarantee that credit card details and other sensitive data are encrypted and tokenized before they even reach your system—keeping your platform safe, compliant, and easy to integrate.
+
+<Callout type="info" title="Why Use Deets iFrame?">
+Deets iFrame offers a seamless, secure, and PCI-compliant way to capture and tokenize payment details directly from your checkout page.
+</Callout>
+
+## How Deets iFrame Works
+
+Deets iFrame seamlessly integrates with your checkout page to capture and tokenize your customers' payment details. This ensures:
+
+- **End to End Security**: Sensitive data is never stored or processed on your servers.
+- **PCI Scope Reduction**: Since Deets handles the tokenization, your compliance requirements are drastically reduced.
+- **Recurring & Future Payments**: Securely store tokens for one-click checkout, subscriptions, or repeat transactions.
+
+## How it Works Step-by-Step
+
+1. **Customer enters payment details** into the Deets iFrame.
+2. **Deets iFrame securely tokenizes the data** and transmits it to our servers.
+3. **Your system receives a secure token** — ready for payment processing without handling raw card details.
+
+With Deets, you reduce risk, speed up integration, and ensure compliance—all while delivering a seamless customer experience.
+
+## 🚀 How to Use Deets iFrame
+
+Integrating Deets iFrame into your checkout process is fast and easy. Just follow these two steps:
+
+1. **Generate and configure a checkout page**  
+   Define your checkout experience with the right settings for your business.
+2. **Integrate the checkout page into your site**  
+   Embed the iFrame into your platform for a seamless, secure payment process.
+
+You can also customize the iFrame's appearance to match your brand. Check out the [Checkout Page Builder](#) for more details.
+
+---
+
+# Generate & Configure Your Checkout Page with Deets iFrame
+
+Deets provides a secure, flexible, and fully customizable checkout solution that keeps sensitive payment data out of your infrastructure—eliminating PCI compliance headaches while giving you full control over the payment experience.
+
+## 🛠️ Getting Started
+
+To integrate Deets iFrame into your checkout, follow these three key steps:
+
+1. **Authenticate with Deets API** – Securely obtain an authentication token.
+2. **Generate Your Checkout Page** – Use Deets API to dynamically create a payment page.
+3. **Customize & Configure the Checkout Page** – Use query parameters to tailor the checkout experience.
+
+> **Base URLs:**
+> - Sandbox API: https://test.digitszapi.com/test
+> - Sandbox Payment API: https://utilities.staging.digitsz.com
+> - Production API: https://beta.digitszapi.com/v3
+> - Production Payment API: https://utilities.digitsz.com
+
+> **Sandbox Credentials:**
+> - Merchant ID: `csourc--goodminicpg-7f8651f3-324605-1793619739`
+> - API Key: `EmBfw7bE2vMCElw6Knx6mretnicxy3gVGvNmk`
+> - App Key: `7U3JcyL1oTSCHXycymPf0eEXGythyz2uzZ3kdnX75USkHqLZMGKY0O0anJtI`
+
+Your account manager will provide you production credentials after sandbox integration.
+
+---
+
+## Step 1: Authenticate with Deets API
+
+Before you can generate a checkout page, you need to authenticate your API requests using the credentials provided by your Deets account manager after signing up to MyValet.
+
+### Generating an Authentication Token
+
+<Tabs>
+  <Tab title="cURL">
+
+```bash
+curl --location "{base_url}/auth/token" \
+  --header "x-api-key: {your-app-key}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "data": {
+      "type": "auth",
+      "attributes": {
+        "appKey": "{your-app-key}"
+      }
+    }
+  }'
+```
+  </Tab>
+  <Tab title="Node.js">
+
+```js
+const axios = require('axios');
+
+const response = await axios.post(
+  '{base_url}/auth/token',
+  {
+    data: {
+      type: 'auth',
+      attributes: {
+        appKey: '{your-app-key}'
+      }
+    }
+  },
+  {
+    headers: {
+      'x-api-key': '{your-app-key}',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+const token = response.data.data.attributes.appToken;
+```
+  </Tab>
+  <Tab title="Python">
+
+```python
+import requests
+
+url = "{base_url}/auth/token"
+headers = {
+    "x-api-key": "{your-app-key}",
+    "Content-Type": "application/json"
+}
+data = {
+    "data": {
+        "type": "auth",
+        "attributes": {
+            "appKey": "{your-app-key}"
+        }
+    }
+}
+response = requests.post(url, json=data, headers=headers)
+token = response.json()["data"]["attributes"]["appToken"]
+```
+  </Tab>
+  <Tab title="PHP">
+
+```php
+<?php
+$ch = curl_init();
+$data = json_encode([
+    "data" => [
+        "type" => "auth",
+        "attributes" => [
+            "appKey" => "{your-app-key}"
+        ]
+    ]
+]);
+curl_setopt($ch, CURLOPT_URL, "{base_url}/auth/token");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "x-api-key: {your-app-key}",
+    "Content-Type: application/json"
+]);
+$response = curl_exec($ch);
+curl_close($ch);
+$token = json_decode($response, true)["data"]["attributes"]["appToken"];
+?>
+```
+  </Tab>
+  <Tab title="Java">
+
+```java
+import okhttp3.*;
+import org.json.JSONObject;
+
+OkHttpClient client = new OkHttpClient();
+String url = "{base_url}/auth/token";
+JSONObject data = new JSONObject()
+    .put("type", "auth")
+    .put("attributes", new JSONObject().put("appKey", "{your-app-key}"));
+JSONObject body = new JSONObject().put("data", data);
+RequestBody requestBody = RequestBody.create(
+    body.toString(), MediaType.parse("application/json"));
+Request request = new Request.Builder()
+    .url(url)
+    .addHeader("x-api-key", "{your-app-key}")
+    .addHeader("Content-Type", "application/json")
+    .post(requestBody)
+    .build();
+Response response = client.newCall(request).execute();
+String responseBody = response.body().string();
+JSONObject json = new JSONObject(responseBody);
+String token = json.getJSONObject("data").getJSONObject("attributes").getString("appToken");
+```
+  </Tab>
+  <Tab title="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+func main() {
+    url := "{base_url}/auth/token"
+    payload := map[string]interface{}{
+        "data": map[string]interface{}{
+            "type": "auth",
+            "attributes": map[string]interface{}{
+                "appKey": "{your-app-key}",
+            },
+        },
+    }
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+    req.Header.Set("x-api-key", "{your-app-key}")
+    req.Header.Set("Content-Type", "application/json")
+    client := &http.Client{}
+    resp, _ := client.Do(req)
+    defer resp.Body.Close()
+    respBody, _ := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(respBody))
+    // Parse respBody for appToken as needed
+}
+```
+  </Tab>
+</Tabs>
+
+**Response:**
+```json
+{
+  "links": {
+    "self": "{base_url}/auth/token"
+  },
+  "data": {
+    "type": "auth",
+    "id": "{API KEY USED}",
+    "attributes": {
+      "appToken": "{JWT TOKEN}"
+    }
+  }
+}
+```
+
+> ✅ Store this token securely—it will be used for subsequent API requests.
+
+---
+
+## Step 2: Generate Your Checkout Page
+
+Once authenticated, you can generate a checkout page dynamically.
+
+<Tabs>
+  <Tab title="cURL">
+
+```bash
+curl --location "{base_url}/generator/genPayment" \
+  --header "x-api-key: {your-app-key}" \
+  --header "Authorization: Bearer {authentication-token}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "merchant_id": "{your-merchant-id}",
+    "is_capture_email": true,
+    "is_capture_zip": true,
+    "enable_token": true,
+    "payment_version": "v4",
+    "style": {}
+  }'
+```
+  </Tab>
+  <Tab title="Node.js">
+
+```js
+const axios = require('axios');
+
+const response = await axios.post(
+  '{base_url}/generator/genPayment',
+  {
+    merchant_id: '{your-merchant-id}',
+    is_capture_email: true,
+    is_capture_zip: true,
+    enable_token: true,
+    payment_version: 'v4',
+    style: {}
+  },
+  {
+    headers: {
+      'x-api-key': '{your-app-key}',
+      'Authorization': 'Bearer {authentication-token}',
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+const checkoutUrl = response.data.object.url;
+```
+  </Tab>
+  <Tab title="Python">
+
+```python
+import requests
+
+url = "{base_url}/generator/genPayment"
+headers = {
+    "x-api-key": "{your-app-key}",
+    "Authorization": "Bearer {authentication-token}",
+    "Content-Type": "application/json"
+}
+data = {
+    "merchant_id": "{your-merchant-id}",
+    "is_capture_email": True,
+    "is_capture_zip": True,
+    "enable_token": True,
+    "payment_version": "v4",
+    "style": {}
+}
+response = requests.post(url, json=data, headers=headers)
+checkout_url = response.json()["object"]["url"]
+```
+  </Tab>
+  <Tab title="PHP">
+
+```php
+<?php
+$ch = curl_init();
+$data = json_encode([
+    "merchant_id" => "{your-merchant-id}",
+    "is_capture_email" => true,
+    "is_capture_zip" => true,
+    "enable_token" => true,
+    "payment_version" => "v4",
+    "style" => new stdClass()
+]);
+curl_setopt($ch, CURLOPT_URL, "{base_url}/generator/genPayment");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "x-api-key: {your-app-key}",
+    "Authorization: Bearer {authentication-token}",
+    "Content-Type: application/json"
+]);
+$response = curl_exec($ch);
+curl_close($ch);
+$checkout_url = json_decode($response, true)["object"]["url"];
+?>
+```
+  </Tab>
+  <Tab title="Java">
+
+```java
+import okhttp3.*;
+import org.json.JSONObject;
+
+OkHttpClient client = new OkHttpClient();
+String url = "{base_url}/generator/genPayment";
+JSONObject body = new JSONObject()
+    .put("merchant_id", "{your-merchant-id}")
+    .put("is_capture_email", true)
+    .put("is_capture_zip", true)
+    .put("enable_token", true)
+    .put("payment_version", "v4")
+    .put("style", new JSONObject());
+RequestBody requestBody = RequestBody.create(
+    body.toString(), MediaType.parse("application/json"));
+Request request = new Request.Builder()
+    .url(url)
+    .addHeader("x-api-key", "{your-app-key}")
+    .addHeader("Authorization", "Bearer {authentication-token}")
+    .addHeader("Content-Type", "application/json")
+    .post(requestBody)
+    .build();
+Response response = client.newCall(request).execute();
+String responseBody = response.body().string();
+JSONObject json = new JSONObject(responseBody);
+String checkoutUrl = json.getJSONObject("object").getString("url");
+```
+  </Tab>
+  <Tab title="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+func main() {
+    url := "{base_url}/generator/genPayment"
+    payload := map[string]interface{}{
+        "merchant_id": "{your-merchant-id}",
+        "is_capture_email": true,
+        "is_capture_zip": true,
+        "enable_token": true,
+        "payment_version": "v4",
+        "style": map[string]interface{}{},
+    }
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
+    req.Header.Set("x-api-key", "{your-app-key}")
+    req.Header.Set("Authorization", "Bearer {authentication-token}")
+    req.Header.Set("Content-Type", "application/json")
+    client := &http.Client{}
+    resp, _ := client.Do(req)
+    defer resp.Body.Close()
+    respBody, _ := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(respBody))
+    // Parse respBody for checkout URL as needed
+}
+```
+  </Tab>
+</Tabs>
+
+**Response:**
+```json
+{
+  "message": "OK",
+  "object": {
+    "url": "{YOUR IFRAME URL}"
+  },
+  "shared_key": "{SHARED KEY}"
+}
+```
+
+---
+
+## Step 3: Customize & Configure Your Checkout Page
+
+Deets iFrame allows you to personalize the checkout experience by adding URL query parameters. These parameters can pre-fill customer details, adjust styling, and enable additional security features.
+
+### Query Parameters for Customization
+
+| Parameter     | Type    | Required | Description                                      |
+|--------------|---------|----------|--------------------------------------------------|
+| amount       | Integer | Yes      | Amount in cents (e.g., 1000 for $10.00)          |
+| email        | String  | No       | Customer's email address                         |
+| zip          | String  | No       | Customer's ZIP code                              |
+| invoice      | String  | No       | Unique invoice number for the transaction        |
+| splitConfig  | JSON    | No       | Split payment configuration for multi-recipient transactions |
+
+**Example Checkout Page URL with Parameters:**
+```
+https://checkout.example.com?amount=1000&email=customer@example.com&zip=12345
+```
+
+### Advanced Customization (Embedded Checkout Form Configuration)
+
+| Parameter         | Type    | Required | Description                        |
+|-------------------|---------|----------|------------------------------------|
+| cardHolderName    | String  | No       | Cardholder's name                  |
+| email             | String  | No       | Customer's email address           |
+| isEmailEnabled    | Boolean | No       | Show or hide email field           |
+| mobileNumber      | String  | No       | Customer's phone number            |
+| zipCode           | String  | No       | Customer's ZIP code                |
+| isZipCodeEnabled  | Boolean | No       | Show or hide ZIP code field        |
+
+**Example Embedded Checkout Form URL Parameters:**
+```
+?cardHolderName=John%20Doe&email=customer%40example.com&isEmailEnabled=true&zipCode=12345&isZipCodeEnabled=true
+```
+
+---
+
+<Callout type="success" title="Final Summary">
+By following these steps, you can successfully authenticate, generate, and configure your Deets Frame checkout:
+
+1. **Obtain an Authentication Token** – Secure API access with your credentials.
+2. **Generate a Checkout Page** – Create a secure and dynamic payment session.
+3. **Customize the Checkout Experience** – Use parameters to tailor the UI and functionality.
+4. **Embed Securely & Process Transactions** – Ensure full compliance while keeping payments seamless.
+
+Ready to go live? Start integrating Deets today and unlock fast, secure, and PCI-compliant payments for your business! 🚀
+</Callout>
